@@ -2,15 +2,15 @@
 
 // TODO: Update your information
 #show: doc => template-config(
-  name: "John Doe",
-  id: 801234567,
-  email: "jdoe@charlotte.edu",
-  instructor: "Dr. Jane Smith",
-  department: "Department of Computer Science",
-  title: "Independent Study in Typst Programming",
-  credit: 3,
-  term: "Fall 2025",
-  substitution: none,
+  name: "John Doe", // Your name
+  id: 801234567, // Your student ID
+  email: "jdoe@charlotte.edu", // Your email
+  instructor: "Dr. Jane Smith", // Instructor name
+  department: "Department of Computer Science", // Department name
+  title: "Independent Study in Typst Programming", // Independent study title
+  credit: 3, // Credit hours
+  term: "Fall 2025", // Term
+  substitution: none, // If this is a course substitution, enter the course number; otherwise keep none for an elective
   doc,
 )
 
