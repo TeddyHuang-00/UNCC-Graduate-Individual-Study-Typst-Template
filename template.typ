@@ -1,11 +1,20 @@
 // Graduate Independent Study Form - Typst Template
 // Based on UNC Charlotte Graduate Independent Study Template (Revised 2.20.2019)
+// This file defines the layout, styling, and helper functions for the
+// Independent Study form. It is used by `main.typ` which provides the
+// specific content for the form.
 
 // --- Helper function for input lines ---
+// Creates a horizontal line for input, optionally pre-filled with `body` content.
+// - width: The width of the input line (defaults to 100%).
+// - body: Content to display on the input line.
 #let input(width: 100%, body) = {
   box(width: width, height: 1em, stroke: (bottom: 0.5pt + black))[#body]
 }
 
+// --- Helper function for checkboxes ---
+// Renders a checkbox, either checked or unchecked.
+// - checked: A boolean indicating whether the box should be checked.
 #let checkbox(checked) = {
   if checked {
     box(
@@ -14,15 +23,23 @@
       height: .8em,
       width: .8em,
       {
+        // Draw the checkmark using two rotated lines.
+        // Shorter leg of the checkmark
         box(move(dy: .48em, dx: 0.1em, rotate(45deg, reflow: false, line(length: 0.3em, stroke: black + .1em))))
+        // Longer leg of the checkmark
         box(move(dy: .38em, dx: -0.05em, rotate(-45deg, reflow: false, line(length: 0.48em, stroke: black + .1em))))
       },
     )
   } else {
+    // Render an empty box if not checked.
     box(stroke: .05em + black, fill: white, height: .8em, width: .8em)
   }
 }
 
+// --- Helper function for multi-line text areas ---
+// Creates a text area that expands to fit its content, but maintains a minimum height.
+// - min-height: The minimum height of the text area, in multiples of a single line height (approximated by "F").
+// - body: The content of the text area.
 #let text-area(min-height: 3, body) = context {
   layout(size => {
     let fake-content = [F]
@@ -36,6 +53,11 @@
   })
 }
 
+// --- Helper function for creating a labeled field ---
+// Creates a grid layout for a field name and its corresponding input value.
+// - no-column: If true, the field name does not have a colon appended.
+// - field-name: The label for the field.
+// - field-value: The value or content of the field.
 #let field(no-column: false, field-name, field-value) = {
   grid(
     columns: (auto, 1fr),
@@ -44,23 +66,40 @@
   )
 }
 
+// --- Helper function for creating a detailed text area section ---
+// Creates a section with a heading (field-name) followed by a text-area.
+// - field-name: The heading for this detail section.
+// - field-text: The content for the text-area.
 #let detail(field-name, field-text) = {
   [=== #field-name:]
   text-area(field-text)
 }
 
+// --- Helper function for signature blocks ---
+// Creates a pair of input lines for a signature and date.
+// - signature-label: The label for the signature (e.g., "Student Signature").
+#let signature-block(signature-label) = {
+  grid(
+    columns: (3fr, 1fr),
+    row-gutter: 0.5em,
+    input[], input[],
+    [#signature-label], [Date],
+  )
+}
+
 // --- Template Setup ---
+// Main function to configure and generate the document.
 #let template-config(
-  name: "John Doe",
-  id: "80xxxxxxx",
-  email: "jdoe@charlotte.edu",
-  instructor: "Dr. Jane Smith",
-  department: "Computer Science",
-  title: "Independent Study in Typst Programming",
-  credit: "3",
-  term: "Fall 2025",
-  substitution: none,
-  doc,
+  name: "John Doe", // Student's full name.
+  id: "80xxxxxxx", // Student's ID number.
+  email: "jdoe@charlotte.edu", // Student's email address.
+  instructor: "Dr. Jane Smith", // Supervising instructor's name.
+  department: "Computer Science", // Department offering the course.
+  title: "Independent Study in Typst Programming", // Title of the independent study.
+  credit: "3", // Number of credit hours.
+  term: "Fall 2025", // Academic term (e.g., "Fall 2025", "Spring 2026").
+  substitution: none, // Course number if this is a substitution (e.g., "ITCS 6114"), otherwise `none`.
+  doc, // The main content of the document (learning outcomes, grading, etc.).
 ) = {
   set page(
     paper: "us-letter",
@@ -117,18 +156,8 @@
     clearance: 6pt,
     block(breakable: false)[
       #v(2em)
-      #grid(
-        columns: (3fr, 1fr),
-        row-gutter: 0.5em,
-        input[], input[],
-        [Student Signature], [Date],
-      )
-      #grid(
-        columns: (3fr, 1fr),
-        row-gutter: 0.5em,
-        input[], input[],
-        [Supervising Instructor Signature], [Date],
-      )
+      #signature-block("Student Signature")
+      #signature-block("Supervising Instructor Signature")
       #v(2em)
       #grid(
         columns: (auto, auto, 1fr),
